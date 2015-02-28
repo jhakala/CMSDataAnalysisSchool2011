@@ -1,0 +1,100 @@
+Step 1)
+
+Produce PAT tuples and custom-made trees. Use crab submission for Data, PY6 QCD and EWK backgrounds. 
+Use interactive jobs for BH signal samples.
+
+Step 2)
+a) cp -r /uscmst1b_scratch/lpc1/lpctrig/aferapon/CMSDataAnalysisSchool2011/MacrosFirstDraftTest .
+   cd MacrosFirstDraftTest
+   mkdir Results
+ 
+.x plot_distr_step2.C -- produce various distributions in data and MC
+
+b) Produce 1) Multiplicity (0 - 20 range) - note high values for signal, concentrate on high mult events only.
+	      Note: for this plot, do not apply any requirements (req variable)	
+	      This root file will also be used as a reference file for acceptance calculation. Must have!	
+		Quiz: is it as expected? Why?
+	   2) ST, mBH, Met, NJets, NElectrons, NMuons for Multiplicity>=2
+	   	Quiz: find two variables with possible good signal-background discriminating power. Why? 
+			
+c) Must have: 	ST distributions for Multiplicity==2, ==3, >=3, >=4, >=5, and >=6
+d) The rest:	up to users
+
+Step 3) 
+
+a) .x plot_qcd_shape_step2.C -- Plot QCD shapes of ST, mBH
+		Quiz: Why this one and not the other one?
+		
+b) Fitting Multiplicity==2 and Multiplicity==3 distributions
+.x ddm_fit_step3.C
+		Quiz: give numerical results of fit-0 for Mult == 2 and ==3
+
+Step 4)
+.x  norm_step4.C -- estimate normalization factors for higher multiplicities
+
+a) Must have:	normalization of Multiplicity==2 to : ==3, >=3, >=4, >=5, >=6
+Note: norm 2 to >=6 might require manual input, since fit is not good
+b) The rest:	up to users
+		Quiz: give numerical results for all 5 mult. choices
+		
+Step 5)
+.x shape_syst_step5.C -- estimate systematic uncertainty on background due to variations in fitting functions
+		Quiz: is the behavior expected?  Give numerical results 
+		of shape systematics for ST = 1000, ST = 1500, ST = 2000, ST = 3000, and ST = 4000
+a) 
+
+Step 6)
+.x plot_sign_step6.C -- find optimal selection criteria for each signal sample
+
+a) Must have:	hall_bh234, bh2354, bh244, bh2454, bh254, sb11, sb12, and sb13
+   
+   Note1: 	to toggle between analyzed signal samples, modify lines 59, 62, 65, and 68.
+   Note2: 	round STmin to hundreds, not 50's. Write down STmin and min. Mult for each signal sample
+		Quiz: do these numbers make sense? (in terms of "STmin" cut - is it anywhere around 
+		values where signal cross section gets larger than QCD cross section [see plots from 
+		Step 2]). Was it possible to roughly estimate them from plots from Step 2?
+Step 7)
+.x plot_final_distr_step7.C -- produce final ST distributions for inclusive Multiplicities 
+
+a) Must have:	Multiplicity>=3, >=4, >=5, and >=6
+b) Note:	Calculate the acceptance for each sample. Write down the following numbers:
+-- STmin, Mult min, Ndata, NQCD +/- dNQCD, A +/- dA, 
+Note: use 5% as dA/A (JEC 5% (+) PDF 2% ~ 5%) 
+		Quiz: provide numbers in the following sequence - sample name, STmin, Multmin, Ndata, Nqcd +/- dNqcd, A +/- dA
+
+Step 8)
+cd Limits
+
+a) Edit bh_limits_step8.C and sb_limits_step8.C -- input numbers from Step 5
+b) 
+root -l
+.L cl95cms.c++
+.x bh_limits_step8.C
+
+Extract the limit on min M_BH in TeV. Appreciate the difference in "visual" limits with LIN and LOG scales
+		Quiz: Provide numerical values for obs. and exp. cross sections for all 8 signal samples    
+c) 
+.x sb_limits_step8.C
+
+Extract limits.
+
+Step 9) Advanced
+Verify systematics due to objects energy scale
+
+Do:
+a) 
+root -l /uscmst1b_scratch/lpc1/lpctrig/aferapon/CMSDataAnalysisSchool2011/Data/jetenriched_run2010b_exo_v2_387_35pb.root
+BHAnalyzer->cd()
+t->MakeClass()
+
+b) Modify t.C to get the variables etc, or simply run:
+root -l -q energyscale.C+
+
+Note:		Make sure to use correct STmin and Multmin values from Step 6
+
+Tweak JEC by +/-5%; 
+Ele, Ph, Mu EC by +/- 3% 
+Calculate acceptance difference in % - use it as systematics!
+
+		Quiz: provide numerical values of systematics for all 8 ("+" and "-") tweaks 
+		for one (or all) signal samples. At least for BH MPl=2 MBH=3 N=4
